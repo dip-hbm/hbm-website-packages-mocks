@@ -1,0 +1,420 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Packages, Option A: Page Builder</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a1828; --ink-2:#334155; --ink-3:#5b6b80; --navy:#0b1120;
+  --teal:#04b6b6; --teal-d:#038a8a; --teal-l:#d9f6f6; --teal-xl:#f1fbfb;
+  --line:#e2e8f0; --paper:#f5f7fa; --gold:#f59e0b;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:'Urbanist',system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5;-webkit-font-smoothing:antialiased}
+button,input{font:inherit;color:inherit}
+a{color:inherit}
+
+/* Review strip: not part of the design, tells Seth what he is looking at */
+.review{background:var(--navy);color:#cfd8e3;font-size:13px}
+.review .in{max-width:1240px;margin:0 auto;padding:10px 24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.review b{color:#fff;font-weight:700}
+.review .tag{display:inline-block;background:rgba(4,182,182,.16);color:#7fe3e3;border-radius:999px;padding:3px 10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-right:10px}
+.review a{color:#7fe3e3;font-weight:700;text-decoration:none;white-space:nowrap}
+.review a:hover{text-decoration:underline}
+
+.page{max-width:1240px;margin:0 auto;padding:0 24px}
+
+/* Packages page context: the category bar the Website tab lives under */
+.cats{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:34px 0 0}
+.cats span{padding:11px 18px;border-radius:999px;font-weight:700;font-size:15px;color:var(--ink-3);background:#fff;border:1.5px solid var(--line)}
+.cats span.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.head{text-align:center;padding:46px 0 36px;max-width:760px;margin:0 auto}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-d);background:var(--teal-l);padding:7px 14px;border-radius:999px}
+.head h1{font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-.03em;font-weight:800;margin:18px 0 14px}
+.head p{font-size:clamp(17px,1.6vw,19px);color:var(--ink-2);margin:0;font-weight:500}
+
+/* Two-panel builder */
+.wb{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);gap:28px;align-items:start}
+
+.plan{background:#fff;border:1.5px solid var(--line);border-radius:24px;overflow:hidden}
+.mode{display:flex;gap:6px;padding:14px;border-bottom:1px solid var(--line);background:#fbfcfd}
+.mode button{flex:1;min-height:46px;border-radius:12px;border:1.5px solid transparent;background:transparent;font-weight:700;font-size:15px;color:var(--ink-3);cursor:pointer;transition:background .25s var(--ease),color .25s var(--ease)}
+.mode button[aria-pressed=true]{background:var(--ink);color:#fff}
+.mode button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+/* The drafting board: the sitemap gets drawn as you add pages */
+.board{position:relative;isolation:isolate;padding:66px 28px 56px;min-height:300px;background:#f3fafa}
+.board::before{content:"";position:absolute;inset:0;z-index:-1;background-image:
+  linear-gradient(rgba(4,182,182,.15) 1px,transparent 1px),linear-gradient(90deg,rgba(4,182,182,.15) 1px,transparent 1px),
+  linear-gradient(rgba(4,182,182,.07) 1px,transparent 1px),linear-gradient(90deg,rgba(4,182,182,.07) 1px,transparent 1px);
+  background-size:96px 96px,96px 96px,16px 16px,16px 16px;background-position:-1px -1px}
+.dim{position:absolute;left:28px;right:28px;top:24px;height:20px}
+.dim::before{content:"";position:absolute;left:0;right:0;top:9px;height:1.5px;background:var(--ink);opacity:.55}
+.dim::after{content:"";position:absolute;inset:0;border-left:1.5px solid rgba(10,24,40,.55);border-right:1.5px solid rgba(10,24,40,.55)}
+.dim span{position:absolute;left:50%;top:-6px;transform:translateX(-50%);background:#f3fafa;padding:0 14px;font-weight:800;font-size:22px;letter-spacing:-.01em;white-space:nowrap;line-height:1.4}
+.dim span small{font-size:15px;font-weight:600;color:var(--ink-3);margin-left:4px}
+.zone{position:absolute;right:20px;bottom:14px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+
+.tiles{display:flex;flex-wrap:wrap;gap:14px 12px;align-content:flex-start}
+.grp{width:100%;font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-d);margin:6px 0 -2px}
+.grp:first-child{margin-top:0}
+.tile{width:84px}
+.sheet{position:relative;height:62px;border:1.5px solid rgba(10,24,40,.7);border-radius:6px;background:#fff;overflow:hidden}
+.sheet::before{content:"";position:absolute;left:0;right:0;top:0;height:9px;border-bottom:1.5px solid rgba(10,24,40,.7);background:var(--teal-xl)}
+.sheet::after{content:"";position:absolute;left:8px;right:8px;top:17px;height:16px;border-radius:3px;background:var(--teal-l);box-shadow:0 22px 0 -5px #e6edf2,0 30px 0 -5px #e6edf2}
+.tile.core .sheet::after{background:#ffe7b8}
+.tile.loc .sheet::after{background:#e3ecff}
+.tile b{display:block;margin-top:6px;font-size:12px;font-weight:600;color:var(--ink-2);text-align:center;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tile.new{animation:drop .45s var(--ease) both}
+@keyframes drop{from{opacity:0;transform:translateY(-10px) scale(.92)}to{opacity:1;transform:none}}
+
+/* Controls */
+.ctrls{padding:8px 0}
+.row{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:14px 22px;border-top:1px solid #eef2f6}
+.row:first-child{border-top:0}
+.row .t{min-width:0}
+.row .t strong{display:block;font-size:16px;font-weight:700}
+.row .t span{display:block;font-size:14px;color:var(--ink-3);font-weight:500}
+.lock{font-size:13px;font-weight:700;color:var(--teal-d);background:var(--teal-xl);border-radius:999px;padding:8px 14px;white-space:nowrap}
+.step{display:flex;align-items:center;border:1.5px solid var(--line);border-radius:14px;overflow:hidden;flex:none}
+.step button{width:46px;height:46px;border:0;background:#fff;font-size:22px;font-weight:600;cursor:pointer;color:var(--ink);transition:background .2s}
+.step button:hover{background:var(--teal-xl)}
+.step button:disabled{color:#c3cdd8;cursor:not-allowed;background:#fff}
+.step output{min-width:38px;text-align:center;font-weight:800;font-size:17px}
+.sw{position:relative;width:58px;height:34px;flex:none;border-radius:999px;border:0;background:#dbe3ea;cursor:pointer;transition:background .3s var(--ease)}
+.sw::after{content:"";position:absolute;top:4px;left:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 3px rgba(10,24,40,.25);transition:transform .3s var(--ease)}
+.sw[aria-checked=true]{background:var(--teal)}
+.sw[aria-checked=true]::after{transform:translateX(24px)}
+.sw:focus-visible,.step button:focus-visible{outline:3px solid var(--teal);outline-offset:2px}
+
+/* Range mode */
+.range{padding:30px 26px 34px;display:none}
+.plan[data-mode=range] .range{display:block}
+.plan[data-mode=range] .ctrls{display:none}
+.range label{display:block;font-weight:700;font-size:16px;margin-bottom:6px}
+.range p{margin:0 0 26px;color:var(--ink-3);font-size:15px;font-weight:500}
+.slider{-webkit-appearance:none;appearance:none;width:100%;height:12px;border-radius:999px;outline:none;cursor:pointer;
+  background:linear-gradient(90deg,#cdeeee 0 12.82%,#9ddede 12.82% 30.77%,#5fcaca 30.77% 64.1%,#1fa9a9 64.1% 100%)}
+.slider::-webkit-slider-thumb{-webkit-appearance:none;width:32px;height:32px;border-radius:50%;background:#fff;border:3px solid var(--ink);box-shadow:0 4px 10px rgba(10,24,40,.2)}
+.slider::-moz-range-thumb{width:28px;height:28px;border-radius:50%;background:#fff;border:3px solid var(--ink)}
+.slider:focus-visible{outline:3px solid var(--teal);outline-offset:6px}
+.ticks{position:relative;height:30px;margin-top:10px;font-size:12px;font-weight:700;color:var(--ink-3)}
+.ticks span{position:absolute;transform:translateX(-50%);white-space:nowrap}
+
+/* Result card */
+.res{position:sticky;top:20px;background:#fff;border:1.5px solid var(--line);border-radius:24px;padding:28px 28px 26px;box-shadow:0 1px 2px rgba(10,24,40,.04),0 24px 60px rgba(10,24,40,.06)}
+.res .lbl{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin:0 0 14px}
+.track{position:relative;display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin:6px 0 30px}
+.seg{height:10px;border-radius:999px;background:#e9eff4;transition:background .4s var(--ease)}
+.seg.on{background:var(--teal)}
+.seg.past{background:#bfe9e9}
+.seg-l{font-size:12px;font-weight:700;color:var(--ink-3);margin-top:9px;display:block}
+.seg-w.on .seg-l{color:var(--ink)}
+.marker{position:absolute;top:-12px;width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:9px solid var(--ink);transform:translateX(-50%);transition:left .55s var(--ease)}
+.res-body.swap{animation:swap .42s var(--ease)}
+@keyframes swap{from{opacity:.25;transform:translateY(6px)}to{opacity:1;transform:none}}
+.tier{font-size:clamp(28px,2.6vw,34px);font-weight:800;letter-spacing:-.02em;margin:0;line-height:1.1}
+.desc{margin:8px 0 18px;color:var(--ink-2);font-size:16px;font-weight:500}
+.price{display:flex;align-items:baseline;gap:8px;margin:0 0 4px}
+.price strong{font-size:clamp(44px,4.4vw,56px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.price span{font-size:16px;color:var(--ink-3);font-weight:600}
+.fits{font-size:14px;font-weight:600;color:var(--teal-d);margin:0 0 20px}
+.inc{list-style:none;margin:0 0 20px;padding:18px 0 0;border-top:1px dashed #d6e2e8}
+.inc li{position:relative;padding:7px 0 7px 32px;font-size:15.5px;font-weight:500}
+.inc li::before{content:"";position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--teal-l) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23038a8a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/12px no-repeat}
+.nudge{background:var(--teal-xl);border:1px solid #cdeeee;border-radius:14px;padding:14px 16px;font-size:14.5px;font-weight:500;color:var(--ink-2);margin:0 0 20px}
+.nudge b{color:var(--ink)}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:14px;background:var(--teal);color:#fff;font-weight:800;font-size:16.5px;text-decoration:none;transition:background .2s,transform .2s var(--ease)}
+.cta:hover{background:var(--teal-d);transform:translateY(-2px)}
+.ghost{display:block;text-align:center;margin-top:14px;font-weight:700;font-size:15px;color:var(--ink);text-decoration:none;padding:8px}
+.ghost:hover{color:var(--teal-d)}
+
+/* Side by side */
+.compare{padding:72px 0 30px}
+.compare h2{text-align:center;font-size:clamp(28px,3vw,38px);letter-spacing:-.02em;margin:0 0 8px}
+.compare > p{text-align:center;color:var(--ink-3);margin:0 0 32px;font-weight:500}
+.cols{display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
+.col{background:#fff;border:1.5px solid var(--line);border-radius:20px;padding:24px 22px;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease)}
+.col.on{border-color:var(--teal);box-shadow:0 18px 40px rgba(4,182,182,.12);transform:translateY(-4px)}
+.col .r{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+.col h3{font-size:22px;margin:6px 0 2px;letter-spacing:-.01em}
+.col .p{font-size:28px;font-weight:800;letter-spacing:-.02em}
+.col .p small{font-size:14px;color:var(--ink-3);font-weight:600}
+.col ul{list-style:none;margin:16px 0 0;padding:14px 0 0;border-top:1px dashed #d6e2e8}
+.col li{font-size:14.5px;padding:5px 0 5px 20px;position:relative;font-weight:500;color:var(--ink-2)}
+.col li::before{content:"";position:absolute;left:2px;top:13px;width:8px;height:8px;border-radius:2px;background:var(--teal)}
+
+/* Review notes */
+.notes{margin:40px 0 70px;background:#fff;border:1.5px dashed #c9d6df;border-radius:20px;padding:24px 28px}
+.notes h4{margin:0 0 10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.notes ul{margin:0;padding-left:20px;color:var(--ink-2);font-size:15px}
+.notes li{margin:6px 0}
+
+/* Phone: one column + a sticky summary */
+.dock{display:none}
+@media(max-width:980px){
+  .wb{grid-template-columns:minmax(0,1fr)}
+  .res{position:static}
+  .cols{grid-template-columns:repeat(2,1fr)}
+  .dock{display:flex;position:fixed;left:12px;right:12px;bottom:12px;z-index:20;align-items:center;justify-content:space-between;gap:12px;background:var(--ink);color:#fff;border-radius:16px;padding:10px 10px 10px 18px;box-shadow:0 14px 40px rgba(10,24,40,.35);transform:translateY(140%);transition:transform .45s var(--ease)}
+  .dock.show{transform:none}
+  .dock .d1{font-size:13px;color:#9fb1c3;font-weight:600}
+  .dock .d2{font-size:17px;font-weight:800}
+  .dock a{min-height:46px;display:flex;align-items:center;padding:0 18px;border-radius:12px;background:var(--teal);font-weight:800;text-decoration:none;font-size:15px;color:#fff}
+}
+@media(max-width:600px){
+  .page{padding:0 16px}
+  .board{padding:62px 16px 52px}
+  .dim{left:16px;right:16px}
+  .tile{width:68px}
+  .sheet{height:52px}
+  .row{padding:14px 16px}
+  .res{padding:24px 20px}
+  .cols{grid-template-columns:minmax(0,1fr)}
+  .cats{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin:0 -16px;padding-left:16px;padding-right:16px}
+  .cats span{white-space:nowrap}
+  .notes{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="review"><div class="in">
+  <div><span class="tag">For review</span><b>Website packages, layout option A:</b> build your site page by page. Mock only, not live.</div>
+  <a href="option-b-example-sites.html">See option B: example sites &rarr;</a>
+</div></div>
+
+<div class="page">
+  <div class="cats" aria-hidden="true"><span>Marketing Packages</span><span>SEO Packages</span><span>Paid Ads Packages</span><span class="on">Website Packages</span><span>Social Media Packages</span></div>
+
+  <header class="head">
+    <span class="eyebrow">Website Packages</span>
+    <h1>Plan your site. We&rsquo;ll match the package.</h1>
+    <p>Add the pages your business needs. The package and price update as you go. One-time price, no monthly fee.</p>
+  </header>
+
+  <section class="wb">
+    <div class="plan" id="plan" data-mode="build">
+      <div class="mode" role="group" aria-label="How do you want to size your site?">
+        <button type="button" data-mode="build" aria-pressed="true">Build it page by page</button>
+        <button type="button" data-mode="range" aria-pressed="false">I know my page count</button>
+      </div>
+
+      <div class="board" aria-hidden="true">
+        <div class="dim"><span id="dimN">8<small>pages</small></span></div>
+        <div class="tiles" id="tiles"></div>
+        <div class="zone" id="zone">Growth range</div>
+      </div>
+
+      <div class="ctrls" id="ctrls"></div>
+
+      <div class="range">
+        <label for="slider">How many pages do you need?</label>
+        <p>Drag to your page count. Not sure? Switch back and build it page by page.</p>
+        <input class="slider" id="slider" type="range" min="1" max="40" value="8" aria-describedby="zone">
+        <div class="ticks" aria-hidden="true">
+          <span style="left:0%">1</span><span style="left:12.82%">5</span><span style="left:28.2%">12</span><span style="left:61.5%">25</span><span style="left:100%">40+</span>
+        </div>
+      </div>
+    </div>
+
+    <aside class="res" id="res" aria-live="polite">
+      <p class="lbl">Your package</p>
+      <div class="track" id="track"></div>
+      <div class="res-body" id="resBody"></div>
+    </aside>
+  </section>
+
+  <section class="compare" id="compare">
+    <h2>Every website package, side by side</h2>
+    <p>All four are a one-time build. Your current match is highlighted.</p>
+    <div class="cols" id="cols"></div>
+  </section>
+
+  <aside class="notes">
+    <h4>Notes for review</h4>
+    <ul>
+      <li>Prices, descriptions and inclusions are the live Website tab, word for word. Nothing new has been priced.</li>
+      <li>Page ranges are the current list: Starter 1 to 5, Growth 6 to 12, Premium 12 to 25, Authority 25+. Growth and Premium both claim 12 pages, so the builder counts 12 as Growth. The meeting notes used 6 to 14 and 12 to 25 as examples, which overlap too. Which ranges should we publish?</li>
+      <li>The page types (services, projects, location pages and so on) are typical builder pages, there to help people count. They don't change the price on their own.</li>
+      <li>"Book a Call" goes to the same booking page as every other package.</li>
+    </ul>
+  </aside>
+</div>
+
+<div class="dock" id="dock">
+  <div><div class="d1" id="dockA">8 pages</div><div class="d2" id="dockB">Growth &middot; $3,995</div></div>
+  <a href="https://homebuildermarketers.com/schedule-a-consultation/" target="_blank" rel="noopener">Book a Call</a>
+</div>
+
+<script>
+(function(){
+  var BOOK = 'https://homebuildermarketers.com/schedule-a-consultation/';
+  var TIERS = [
+    {short:'Starter',  name:'Starter Website',  price:'$1,995', min:1,  max:5,  range:'1 to 5 pages',   track:'1–5',
+     desc:'A clean, professional site that gets you online and credible fast.',
+     features:['1 to 5 pages','Template-based or semi-custom design','Basic SEO setup','Mobile responsive build','Contact form']},
+    {short:'Growth',   name:'Growth Website',   price:'$3,995', min:6,  max:12, range:'6 to 12 pages',  track:'6–12',
+     desc:'Built to generate leads, not just look good.',
+     features:['6 to 12 pages','Semi-custom design','Standard SEO with keyword mapping','10 to 25 keywords','Lead forms','Analytics setup']},
+    {short:'Premium',  name:'Premium Website',  price:'$5,995', min:13, max:25, range:'12 to 25 pages', track:'13–25',
+     desc:'A fully custom build that positions you above your local competition.',
+     features:['12 to 25 pages','Fully custom design','Advanced SEO','25 to 50 keywords','Advanced animations','Conversion sections','CRM integration']},
+    {short:'Authority',name:'Authority Website',price:'$8,000', min:26, max:40, range:'25+ pages',      track:'26+',
+     desc:'Own your market. Rank across every city you serve.',
+     features:['25+ pages','Location page strategy','Full local SEO foundation','Advanced technical SEO','Premium animation','Multiple integrations']}
+  ];
+  var TYPES = [
+    {id:'core',      label:'Home, About and Contact', hint:'Every site starts here',                     kind:'lock',  value:3, tiles:['Home','About','Contact'], cls:'core', group:'The essentials'},
+    {id:'services',  label:'Service pages',            hint:'One for each service you sell',              kind:'step',  value:3, max:12, tile:'Service',  group:'What you do'},
+    {id:'projects',  label:'Featured projects',        hint:'Your best builds, with photos',              kind:'switch',value:1, tile:'Projects', group:'What you do'},
+    {id:'process',   label:'Our process',              hint:'How a build works with you',                 kind:'switch',value:1, tile:'Process',  group:'What you do'},
+    {id:'reviews',   label:'Reviews',                  hint:'What past clients say',                      kind:'switch',value:0, tile:'Reviews',  group:'Trust'},
+    {id:'faq',       label:'FAQ',                      hint:'Answers before the first call',              kind:'switch',value:0, tile:'FAQ',      group:'Trust'},
+    {id:'blog',      label:'Blog',                     hint:'Articles that pull in search traffic',       kind:'switch',value:0, tile:'Blog',     group:'Trust'},
+    {id:'locations', label:'Location pages',           hint:'One for each city you serve',                kind:'step',  value:0, max:30, tile:'City', cls:'loc', group:'Where you build'},
+    {id:'extra',     label:'Other pages',              hint:'Careers, financing, warranty and the rest',  kind:'step',  value:0, max:10, tile:'Page',     group:'Everything else'}
+  ];
+
+  var plan = document.getElementById('plan'), tilesEl = document.getElementById('tiles'), ctrls = document.getElementById('ctrls');
+  var slider = document.getElementById('slider'), track = document.getElementById('track'), resBody = document.getElementById('resBody');
+  var mode = 'build', shownN = 0, lastTier = -1, prevKeys = {};
+
+  function tierFor(n){ return n <= 5 ? 0 : n <= 12 ? 1 : n <= 25 ? 2 : 3; }
+  function planCount(){ return TYPES.reduce(function(s,t){ return s + t.value; }, 0); }
+  function count(){ return mode === 'range' ? +slider.value : planCount(); }
+  function lc1(s){ return s.charAt(0).toLowerCase() + s.slice(1); } // "Advanced SEO" -> "advanced SEO"
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+
+  /* Controls */
+  TYPES.forEach(function(t){
+    var row = document.createElement('div'); row.className = 'row';
+    var ctl;
+    if (t.kind === 'lock') ctl = '<span class="lock">Always included</span>';
+    else if (t.kind === 'step') ctl = '<div class="step"><button type="button" data-d="-1" aria-label="Fewer ' + esc(t.label.toLowerCase()) + '">&minus;</button><output id="o-' + t.id + '">' + t.value + '</output><button type="button" data-d="1" aria-label="More ' + esc(t.label.toLowerCase()) + '">+</button></div>';
+    else ctl = '<button type="button" class="sw" role="switch" aria-checked="' + (t.value ? 'true' : 'false') + '" aria-label="' + esc(t.label) + '"></button>';
+    row.innerHTML = '<div class="t"><strong>' + esc(t.label) + '</strong><span>' + esc(t.hint) + '</span></div>' + ctl;
+    row.addEventListener('click', function(e){
+      var b = e.target.closest('button'); if (!b) return;
+      if (b.dataset.d) t.value = Math.max(0, Math.min(t.max, t.value + (+b.dataset.d)));
+      else if (b.classList.contains('sw')) t.value = t.value ? 0 : 1;
+      syncControls(); render();
+    });
+    t.row = row; ctrls.appendChild(row);
+  });
+  function syncControls(){
+    TYPES.forEach(function(t){
+      if (t.kind === 'step') {
+        t.row.querySelector('output').textContent = t.value;
+        var bs = t.row.querySelectorAll('.step button'); bs[0].disabled = t.value <= 0; bs[1].disabled = t.value >= t.max;
+      } else if (t.kind === 'switch') t.row.querySelector('.sw').setAttribute('aria-checked', t.value ? 'true' : 'false');
+    });
+  }
+
+  /* Board */
+  function drawBoard(n){
+    var html = '', keys = {}, lastGroup = null;
+    function tile(key, label, cls){
+      keys[key] = 1;
+      html += '<div class="tile' + (cls ? ' ' + cls : '') + (prevKeys[key] ? '' : ' new') + '"><div class="sheet"></div><b>' + esc(label) + '</b></div>';
+    }
+    if (mode === 'range') {
+      html += '<div class="grp">Your pages</div>';
+      for (var i = 1; i <= n; i++) tile('r' + i, i === 1 ? 'Home' : 'Page ' + i, i === 1 ? 'core' : '');
+    } else {
+      TYPES.forEach(function(t){
+        if (!t.value) return;
+        if (t.group !== lastGroup) { html += '<div class="grp">' + esc(t.group) + '</div>'; lastGroup = t.group; }
+        if (t.tiles) t.tiles.forEach(function(lb, i){ tile(t.id + i, lb, t.cls); });
+        else for (var j = 1; j <= t.value; j++) tile(t.id + j, t.value === 1 ? t.tile : t.tile + ' ' + j, t.cls);
+      });
+    }
+    tilesEl.innerHTML = html; prevKeys = keys;
+  }
+
+  /* Count-up on the dimension label */
+  function animateN(to){
+    var from = shownN, start = performance.now(), el = document.getElementById('dimN');
+    function f(now){
+      var p = Math.min(1, (now - start) / 380), e = 1 - Math.pow(1 - p, 4), v = Math.round(from + (to - from) * e);
+      el.innerHTML = (v >= 40 && mode === 'range' ? '40+' : v) + '<small>' + (v === 1 ? 'page' : 'pages') + '</small>';
+      if (p < 1) requestAnimationFrame(f); else shownN = to;
+    }
+    requestAnimationFrame(f);
+  }
+
+  /* Result card */
+  track.innerHTML = TIERS.map(function(t, i){ return '<div class="seg-w" data-i="' + i + '"><div class="seg"></div><span class="seg-l">' + t.track + '</span></div>'; }).join('') + '<div class="marker" id="marker"></div>';
+  function markerLeft(n, ti){
+    var t = TIERS[ti], span = t.max - t.min, f = span ? Math.max(0, Math.min(1, (n - t.min) / span)) : .5;
+    var colW = 100 / 4; return (ti * colW + (0.08 + f * 0.84) * colW) + '%';
+  }
+  function body(ti, n){
+    var t = TIERS[ti], nx = TIERS[ti + 1], nudge = '';
+    if (nx) {
+      var need = nx.min - n;
+      nudge = '<p class="nudge"><b>' + need + ' more page' + (need === 1 ? '' : 's') + '</b> and you&rsquo;re into ' + nx.short + ': ' + esc(lc1(nx.features[1])) + ' and ' + esc(lc1(nx.features[2])) + '.</p>';
+    }
+    return '<h2 class="tier">' + esc(t.name) + '</h2>' +
+      '<p class="desc">' + esc(t.desc) + '</p>' +
+      '<div class="price"><strong>' + t.price + '</strong><span>one-time</span></div>' +
+      '<p class="fits">Fits sites with ' + esc(t.range) + '</p>' +
+      '<ul class="inc">' + t.features.map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' + nudge +
+      '<a class="cta" href="' + BOOK + '" target="_blank" rel="noopener">Book a Call <span aria-hidden="true">&rarr;</span></a>' +
+      '<a class="ghost" href="#compare">Compare all four packages</a>';
+  }
+
+  /* Side by side */
+  var cols = document.getElementById('cols');
+  cols.innerHTML = TIERS.map(function(t, i){
+    return '<div class="col" data-i="' + i + '"><div class="r">' + esc(t.range) + '</div><h3>' + esc(t.short) + '</h3><div class="p">' + t.price + ' <small>one-time</small></div><ul>' +
+      t.features.slice(1).map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('') + '</ul></div>';
+  }).join('');
+
+  function render(){
+    var n = count(), ti = tierFor(n), t = TIERS[ti];
+    drawBoard(n); animateN(n);
+    document.getElementById('zone').textContent = t.short + ' range';
+    [].forEach.call(track.querySelectorAll('.seg-w'), function(w){
+      var i = +w.dataset.i; w.classList.toggle('on', i === ti);
+      w.querySelector('.seg').className = 'seg' + (i === ti ? ' on' : i < ti ? ' past' : '');
+    });
+    document.getElementById('marker').style.left = markerLeft(n, ti);
+    if (ti !== lastTier || resBody.dataset.n !== String(n)) {
+      resBody.innerHTML = body(ti, n); resBody.dataset.n = n;
+      if (ti !== lastTier) { resBody.classList.remove('swap'); void resBody.offsetWidth; resBody.classList.add('swap'); }
+    }
+    [].forEach.call(cols.children, function(c){ c.classList.toggle('on', +c.dataset.i === ti); });
+    document.getElementById('dockA').textContent = (n >= 40 && mode === 'range' ? '40+' : n) + (n === 1 ? ' page' : ' pages');
+    document.getElementById('dockB').textContent = t.short + ' · ' + t.price;
+    lastTier = ti;
+  }
+
+  [].forEach.call(document.querySelectorAll('.mode button'), function(b){
+    b.addEventListener('click', function(){
+      mode = b.dataset.mode; plan.dataset.mode = mode;
+      [].forEach.call(document.querySelectorAll('.mode button'), function(x){ x.setAttribute('aria-pressed', x === b ? 'true' : 'false'); });
+      if (mode === 'range') slider.value = Math.min(40, planCount());
+      prevKeys = {}; render();
+    });
+  });
+  slider.addEventListener('input', render);
+
+  /* Phone dock: show once the result card has scrolled away */
+  var dock = document.getElementById('dock'), res = document.getElementById('res');
+  if ('IntersectionObserver' in window) new IntersectionObserver(function(es){ dock.classList.toggle('show', !es[0].isIntersecting && window.scrollY > 300); }).observe(res);
+
+  syncControls(); render();
+})();
+</script>
+</body>
+</html>

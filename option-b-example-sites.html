@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Website Packages, Option B: Example Sites</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Urbanist:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0a1828; --ink-2:#334155; --ink-3:#5b6b80; --navy:#0b1120;
+  --teal:#04b6b6; --teal-d:#038a8a; --teal-l:#d9f6f6; --teal-xl:#f1fbfb;
+  --line:#e2e8f0; --paper:#f5f7fa;
+  --ease:cubic-bezier(.22,1,.36,1);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;font-family:'Urbanist',system-ui,sans-serif;color:var(--ink);background:var(--paper);line-height:1.5;-webkit-font-smoothing:antialiased}
+button{font:inherit;color:inherit}
+a{color:inherit}
+
+.review{background:var(--navy);color:#cfd8e3;font-size:13px}
+.review .in{max-width:1240px;margin:0 auto;padding:10px 24px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.review b{color:#fff;font-weight:700}
+.review .tag{display:inline-block;background:rgba(4,182,182,.16);color:#7fe3e3;border-radius:999px;padding:3px 10px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;font-size:12px;margin-right:10px}
+.review a{color:#7fe3e3;font-weight:700;text-decoration:none;white-space:nowrap}
+.review a:hover{text-decoration:underline}
+
+.page{max-width:1240px;margin:0 auto;padding:0 24px}
+.cats{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;padding:34px 0 0}
+.cats span{padding:11px 18px;border-radius:999px;font-weight:700;font-size:15px;color:var(--ink-3);background:#fff;border:1.5px solid var(--line)}
+.cats span.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+
+.head{text-align:center;padding:46px 0 34px;max-width:780px;margin:0 auto}
+.eyebrow{display:inline-block;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--teal-d);background:var(--teal-l);padding:7px 14px;border-radius:999px}
+.head h1{font-size:clamp(34px,4.6vw,56px);line-height:1.04;letter-spacing:-.03em;font-weight:800;margin:18px 0 14px}
+.head p{font-size:clamp(17px,1.6vw,19px);color:var(--ink-2);margin:0;font-weight:500}
+
+/* Tier picker */
+.tabs{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.tab{position:relative;text-align:left;min-height:96px;padding:16px 20px;border-radius:18px;border:1.5px solid var(--line);background:#fff;cursor:pointer;transition:background .3s var(--ease),border-color .3s,color .3s,transform .3s var(--ease)}
+.tab:hover{border-color:#a9dede;transform:translateY(-2px)}
+.tab .r{display:block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d)}
+.tab .n{display:block;font-size:21px;font-weight:800;letter-spacing:-.01em;margin-top:4px}
+.tab .p{display:block;font-size:15px;font-weight:600;color:var(--ink-3)}
+.tab[aria-selected=true]{background:var(--ink);border-color:var(--ink);color:#fff}
+.tab[aria-selected=true] .r{color:#6fe0e0}
+.tab[aria-selected=true] .p{color:#a9b8c8}
+.tab[aria-selected=true]::after{content:"";position:absolute;left:50%;bottom:-9px;width:16px;height:16px;background:var(--ink);transform:translateX(-50%) rotate(45deg);border-radius:3px}
+.tab:focus-visible{outline:3px solid var(--teal);outline-offset:3px}
+
+/* Page-range ruler */
+.ruler{position:relative;margin:30px 6px 8px;height:40px}
+.ruler .bar{position:absolute;left:0;right:0;top:6px;height:10px;display:grid;grid-template-columns:10% 14% 26% 50%;gap:4px}
+.ruler .bar i{border-radius:999px;background:#e5ecf1;transition:background .35s var(--ease)}
+.ruler .bar i.on{background:var(--teal)}
+.ruler .lb{position:absolute;top:22px;font-size:12px;font-weight:700;color:var(--ink-3);transform:translateX(-50%);white-space:nowrap}
+
+/* Stage: live site in a browser window + spec sheet */
+.stage{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(300px,1fr);gap:28px;align-items:start;margin-top:20px}
+.stage.swap .spec{animation:swap .45s var(--ease)}
+@keyframes swap{from{opacity:.2;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+.browser{background:#fff;border:1.5px solid #d6e0e8;border-radius:18px;overflow:hidden;box-shadow:0 1px 2px rgba(10,24,40,.04),0 30px 70px rgba(10,24,40,.10)}
+.chrome{display:flex;align-items:center;gap:12px;padding:12px 14px;border-bottom:1px solid var(--line);background:#f8fafc}
+.dots{display:flex;gap:6px;flex:none}
+.dots i{width:11px;height:11px;border-radius:50%;background:#d3dbe3}
+.url{flex:1;min-width:0;display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:999px;padding:7px 14px;font-size:14px;font-weight:600;color:var(--ink-2);white-space:nowrap;overflow:hidden}
+.url svg{flex:none;width:14px;height:14px;color:var(--teal-d)}
+.url #url{overflow:hidden;text-overflow:ellipsis}
+.pv{flex:none;font-size:11.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#8a5a00;background:#fff3d6;border-radius:999px;padding:2px 8px}
+.open{flex:none;font-size:14px;font-weight:700;color:var(--teal-d);text-decoration:none;padding:8px 6px;white-space:nowrap}
+.open:hover{color:var(--ink)}
+
+.vp{position:relative;height:560px;overflow:hidden;background:#eef3f6}
+.vp .poster{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:top center;transition:opacity .6s var(--ease)}
+.vp.ready .poster{opacity:0}
+.vp iframe{position:absolute;left:0;top:0;border:0;transform-origin:0 0;background:#fff;opacity:0;transition:opacity .6s var(--ease)}
+.vp.ready iframe.on{opacity:1}
+.vp iframe:not(.on){display:none}
+.load{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);display:flex;align-items:center;gap:10px;background:rgba(10,24,40,.86);color:#fff;font-size:13px;font-weight:700;padding:9px 16px;border-radius:999px;white-space:nowrap;transition:opacity .4s}
+.load i{width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.vp.ready .load{opacity:0;pointer-events:none}
+.load,.hint{z-index:3}
+.hint{position:absolute;right:14px;top:14px;background:var(--ink);color:#fff;font-size:12.5px;font-weight:700;padding:7px 12px;border-radius:999px;pointer-events:none;opacity:0;transform:translateY(-4px);transition:opacity .4s,transform .4s var(--ease)}
+.vp.ready .hint{opacity:1;transform:none}
+.vp.touched .hint{opacity:0}
+
+.caption{padding:14px 4px 0;font-size:14px;color:var(--ink-3);font-weight:500}
+.caption b{color:var(--ink);font-weight:700}
+
+.spec{background:#fff;border:1.5px solid var(--line);border-radius:22px;padding:28px}
+.spec .r{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--teal-d);background:var(--teal-xl);border:1px solid #cdeeee;border-radius:999px;padding:5px 12px}
+.spec h2{font-size:clamp(28px,2.6vw,36px);letter-spacing:-.02em;margin:12px 0 6px;line-height:1.08}
+.spec .d{margin:0 0 18px;color:var(--ink-2);font-size:16px;font-weight:500}
+.spec .pr{display:flex;align-items:baseline;gap:8px}
+.spec .pr strong{font-size:clamp(42px,4.2vw,54px);font-weight:800;letter-spacing:-.03em;line-height:1}
+.spec .pr span{font-size:16px;color:var(--ink-3);font-weight:600}
+.spec ul{list-style:none;margin:20px 0 22px;padding:18px 0 0;border-top:1px dashed #d6e2e8}
+.spec li{position:relative;padding:7px 0 7px 32px;font-size:15.5px;font-weight:500}
+.spec li::before{content:"";position:absolute;left:0;top:8px;width:22px;height:22px;border-radius:50%;background:var(--teal-l) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23038a8a' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") center/12px no-repeat}
+.cta{display:flex;align-items:center;justify-content:center;gap:8px;min-height:54px;border-radius:14px;background:var(--teal);color:#fff;font-weight:800;font-size:16.5px;text-decoration:none;transition:background .2s,transform .2s var(--ease)}
+.cta:hover{background:var(--teal-d);transform:translateY(-2px)}
+.ghost{display:block;text-align:center;margin-top:12px;font-weight:700;font-size:15px;text-decoration:none;padding:8px;color:var(--ink)}
+.ghost:hover{color:var(--teal-d)}
+
+.notes{margin:56px 0 70px;background:#fff;border:1.5px dashed #c9d6df;border-radius:20px;padding:24px 28px}
+.notes h4{margin:0 0 10px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3)}
+.notes ul{margin:0;padding-left:20px;color:var(--ink-2);font-size:15px}
+.notes li{margin:6px 0}
+
+@media(max-width:980px){
+  .stage{grid-template-columns:minmax(0,1fr)}
+  .vp{height:520px}
+}
+@media(max-width:760px){
+  .tabs{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:10px;margin:0 -16px;padding:0 16px 12px;scrollbar-width:none}
+  .tab{flex:0 0 72%;scroll-snap-align:start;min-height:88px}
+  .tab[aria-selected=true]::after{display:none}
+  .vp{height:600px}
+}
+@media(max-width:600px){
+  .page{padding:0 16px}
+  .cats{justify-content:flex-start;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;padding-bottom:4px;margin:0 -16px;padding-left:16px;padding-right:16px}
+  .cats span{white-space:nowrap}
+  .spec{padding:24px 20px}
+  .open{display:none}
+  .notes{padding:20px}
+}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="review"><div class="in">
+  <div><span class="tag">For review</span><b>Website packages, layout option B:</b> a real site we built for every tier. Mock only, not live.</div>
+  <a href="option-a-page-builder.html">&larr; See option A: page builder</a>
+</div></div>
+
+<div class="page">
+  <div class="cats" aria-hidden="true"><span>Marketing Packages</span><span>SEO Packages</span><span>Paid Ads Packages</span><span class="on">Website Packages</span><span>Social Media Packages</span></div>
+
+  <header class="head">
+    <span class="eyebrow">Website Packages</span>
+    <h1>See the site before you buy it.</h1>
+    <p>Pick a package and explore a real site we built at that level. One-time price, no monthly fee.</p>
+  </header>
+
+  <div class="tabs" role="tablist" aria-label="Website packages" id="tabs"></div>
+
+  <div class="ruler" aria-hidden="true">
+    <div class="bar" id="bar"><i></i><i></i><i></i><i></i></div>
+    <span class="lb" style="left:0%">1 page</span><span class="lb" style="left:10%">5</span><span class="lb" style="left:24%">12</span><span class="lb" style="left:50%">25</span><span class="lb" style="left:auto;right:0;transform:none">25+</span>
+  </div>
+
+  <section class="stage" id="stage" role="tabpanel" aria-live="polite">
+    <div>
+      <div class="browser">
+        <div class="chrome">
+          <div class="dots"><i></i><i></i><i></i></div>
+          <div class="url"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span id="url"></span><span class="pv" id="pv" hidden>Preview</span></div>
+          <a class="open" id="open" href="#" target="_blank" rel="noopener">Open in a new tab &nearr;</a>
+        </div>
+        <div class="vp" id="vp">
+          <img class="poster" id="poster" alt="">
+          <div class="load" id="load"><i></i><span id="loadTxt">Loading the live site</span></div>
+          <span class="hint">Scroll inside to explore</span>
+        </div>
+      </div>
+      <div class="caption" id="cap"></div>
+    </div>
+    <aside class="spec" id="spec"></aside>
+  </section>
+
+  <aside class="notes">
+    <h4>Notes for review</h4>
+    <ul>
+      <li>Prices, descriptions and inclusions are the live Website tab, word for word.</li>
+      <li>Each tier opens a real site we built, loaded live inside the window, so it's always the current version. Scroll and click around in it. On a phone it shows the site's phone layout.</li>
+      <li>Examples: CreekWest Custom Homes (Starter), Mettle Builders Group (Growth), No 7 Development (Premium), CoCreations Construction &amp; Design (Authority).</li>
+      <li>No 7 and CoCreations are still on their preview addresses. We swap in the real domains when they launch.</li>
+      <li>Check with each client before we feature their site on our packages page.</li>
+      <li>Same question as option A: Growth and Premium both say 12 pages.</li>
+    </ul>
+  </aside>
+</div>
+
+<script>
+(function(){
+  var BOOK = 'https://homebuildermarketers.com/schedule-a-consultation/';
+  var TIERS = [
+    {short:'Starter',  name:'Starter Website',  price:'$1,995', range:'1 to 5 pages',   seg:0,
+     desc:'A clean, professional site that gets you online and credible fast.',
+     features:['1 to 5 pages','Template-based or semi-custom design','Basic SEO setup','Mobile responsive build','Contact form'],
+     ex:{name:'CreekWest Custom Homes', url:'https://creekwest.net/', poster:'assets/creekwest-hero.jpg', preview:false}},
+    {short:'Growth',   name:'Growth Website',   price:'$3,995', range:'6 to 12 pages',  seg:1,
+     desc:'Built to generate leads, not just look good.',
+     features:['6 to 12 pages','Semi-custom design','Standard SEO with keyword mapping','10 to 25 keywords','Lead forms','Analytics setup'],
+     ex:{name:'Mettle Builders Group', url:'https://mettlebuilders.ca/', poster:'assets/mettle-hero.jpg', preview:false}},
+    {short:'Premium',  name:'Premium Website',  price:'$5,995', range:'12 to 25 pages', seg:2,
+     desc:'A fully custom build that positions you above your local competition.',
+     features:['12 to 25 pages','Fully custom design','Advanced SEO','25 to 50 keywords','Advanced animations','Conversion sections','CRM integration'],
+     ex:{name:'No 7 Development', url:'https://plum-bee-545427.hostingersite.com/', poster:'assets/no7-hero.jpg', preview:true}},
+    {short:'Authority',name:'Authority Website',price:'$8,000', range:'25+ pages',      seg:3,
+     desc:'Own your market. Rank across every city you serve.',
+     features:['25+ pages','Location page strategy','Full local SEO foundation','Advanced technical SEO','Premium animation','Multiple integrations'],
+     ex:{name:'CoCreations Construction & Design', url:'https://cocreations-site.cocreations-site.workers.dev/', poster:'assets/cocreations-hero.jpg', preview:true}}
+  ];
+  function esc(s){ return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function host(u){ return u.replace(/^https?:\/\//, '').replace(/\/$/, ''); }
+
+  var tabs = document.getElementById('tabs'), stage = document.getElementById('stage'), vp = document.getElementById('vp');
+  var frames = {}, loaded = {}, cur = 2;
+
+  tabs.innerHTML = TIERS.map(function(t, i){
+    return '<button type="button" class="tab" role="tab" id="tab' + i + '" aria-selected="false" data-i="' + i + '">' +
+      '<span class="r">' + esc(t.range) + '</span><span class="n">' + esc(t.short) + '</span><span class="p">' + t.price + ' one-time</span></button>';
+  }).join('');
+  tabs.addEventListener('click', function(e){ var b = e.target.closest('.tab'); if (b) select(+b.dataset.i); });
+  tabs.addEventListener('keydown', function(e){
+    if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+    var n = (cur + (e.key === 'ArrowRight' ? 1 : 3)) % 4; select(n); document.getElementById('tab' + n).focus();
+  });
+
+  /* The live site renders at its real width (desktop 1440, or 390 on a phone) and is scaled to fit the window. */
+  function baseW(){ return window.innerWidth < 760 ? 390 : 1440; }
+  function fit(){
+    var f = frames[cur]; if (!f) return;
+    var bw = baseW(), s = vp.clientWidth / bw;
+    f.style.width = bw + 'px'; f.style.height = Math.ceil(vp.clientHeight / s) + 'px'; f.style.transform = 'scale(' + s + ')';
+  }
+
+  function select(i){
+    cur = i;
+    var t = TIERS[i], x = t.ex;
+    [].forEach.call(tabs.children, function(b, k){ b.setAttribute('aria-selected', k === i ? 'true' : 'false'); b.tabIndex = k === i ? 0 : -1; });
+    stage.setAttribute('aria-labelledby', 'tab' + i);
+    [].forEach.call(document.getElementById('bar').children, function(el, k){ el.classList.toggle('on', k === t.seg); });
+
+    document.getElementById('url').textContent = host(x.url);
+    document.getElementById('pv').hidden = !x.preview;
+    document.getElementById('open').href = x.url;
+    document.getElementById('poster').src = x.poster;
+    document.getElementById('poster').alt = 'Homepage of ' + x.name;
+    document.getElementById('loadTxt').textContent = 'Loading ' + host(x.url);
+    document.getElementById('cap').innerHTML = '<b>' + esc(x.name) + '</b>, a site we built.' + (x.preview ? ' Pre-launch preview.' : '');
+
+    Object.keys(frames).forEach(function(k){ frames[k].classList.toggle('on', +k === i); });
+    if (!frames[i]) {
+      var f = document.createElement('iframe');
+      f.title = x.name + ', live website';
+      f.setAttribute('sandbox', 'allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox');
+      f.setAttribute('referrerpolicy', 'strict-origin-when-cross-origin');
+      f.className = 'on';
+      f.addEventListener('load', function(){ loaded[i] = true; if (cur === i) vp.classList.add('ready'); });
+      f.src = x.url; frames[i] = f; vp.appendChild(f);
+    }
+    vp.classList.toggle('ready', !!loaded[i]);
+    fit();
+
+    document.getElementById('spec').innerHTML =
+      '<span class="r">' + esc(t.range) + '</span><h2>' + esc(t.name) + '</h2><p class="d">' + esc(t.desc) + '</p>' +
+      '<div class="pr"><strong>' + t.price + '</strong><span>one-time</span></div>' +
+      '<ul>' + t.features.map(function(f){ return '<li>' + esc(f) + '</li>'; }).join('') + '</ul>' +
+      '<a class="cta" href="' + BOOK + '" target="_blank" rel="noopener">Book a Call <span aria-hidden="true">&rarr;</span></a>' +
+      '<a class="ghost" href="' + x.url + '" target="_blank" rel="noopener">Visit ' + esc(x.name) + ' &nearr;</a>';
+    stage.classList.remove('swap'); void stage.offsetWidth; stage.classList.add('swap');
+  }
+
+  vp.addEventListener('pointerenter', function(){ vp.classList.add('touched'); }, {once:true});
+  vp.addEventListener('touchstart', function(){ vp.classList.add('touched'); }, {once:true, passive:true});
+  if ('ResizeObserver' in window) new ResizeObserver(fit).observe(vp); else window.addEventListener('resize', fit);
+
+  select(2);
+})();
+</script>
+</body>
+</html>
